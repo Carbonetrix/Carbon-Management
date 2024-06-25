@@ -139,7 +139,7 @@ def main():
    
     # st.set_page_config(layout="wide")
     c1, c2, c3 = st.columns([1, 2, 1])
-    pth = "Images\logo.jpeg"
+    pth = "Images\logo.png"
     c1.image(pth, width=180)
     c2.title(":blue[BECM AI ASSISTANT]")
 
@@ -165,7 +165,7 @@ def main():
         img_str = base64.b64encode(buffer.getvalue()).decode("utf-8")
         return img_str
 
-    bot_logo_base64 = image_to_base64("Images\logo.jpeg")
+    bot_logo_base64 = image_to_base64("Images\logo.png")
     bot_logo_html = f"data:image/png;base64,{bot_logo_base64}"
 
 
@@ -174,15 +174,6 @@ def main():
     chat_container = st.container()
     input_container = st.container()
 
-    # with chat_container:
-    #     # for i, msg in enumerate(st.session_state["messages"]):
-    #     for i, msg in enumerate(st.session_state.messages):
-
-    #         if msg["role"] == "user": 
-    #             st.markdown(f"<div id='{i}' style='text-align: left; color: black; background-color: #5cf08d; padding: 10px; border-radius: 10px; margin: 10px 0;'>{msg['content']}</div>", unsafe_allow_html=True)
-
-    #         else:
-    #             st.markdown(f"<div id='{i}' style='text-align: left; color: black; background-color: #acfdb8; padding: 10px; border-radius: 10px; margin: 10px 0;'>{msg['content']}</div>", unsafe_allow_html=True)
     with chat_container:
         if st.session_state.messages:
             for i, msg in enumerate(st.session_state.messages):
