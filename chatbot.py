@@ -26,10 +26,13 @@ from PIL import Image
 import base64
 from io import BytesIO
 
+
+uri = "mongodb+srv://carbonetrix:HGnX7kceihSN7jne@carbonetrix.pllb2my.mongodb.net/?retryWrites=true&w=majority&appName=Carbonetrix"
 # uri = "mongodb+srv://Usman:DvlNBJrLRyU0gESv@carbonetrix.pllb2my.mongodb.net/?retryWrites=true&w=majority&appName=Carbonetrix"
 
+
 # MongoDB Management
-client = MongoClient(os.getenv("uri"))
+client = MongoClient(uri)
 db = client.get_database("Carbonetrix")
 users_collection = db['Carbonetrix']
 feedback_collection = db['Feedback'] 
@@ -137,9 +140,9 @@ def main():
    
     # st.set_page_config(layout="wide")
     c1, c2, c3 = st.columns([1, 2, 1])
-    pth = "Images/Logo2.jpg"
-    c1.image(pth, width=200)
-    c2.title(":green[BECM AI ASSISTANT]")
+    pth = "Images\logo.jpeg"
+    c1.image(pth, width=180)
+    c2.title(":blue[BECM AI ASSISTANT]")
 
 
     st.sidebar.selectbox('Select Level:', ['Beginner', 'Intermediate', 'Professional'], key='level')
@@ -163,7 +166,7 @@ def main():
         img_str = base64.b64encode(buffer.getvalue()).decode("utf-8")
         return img_str
 
-    bot_logo_base64 = image_to_base64("Images/Logo2.jpg")
+    bot_logo_base64 = image_to_base64("Images\logo.jpeg")
     bot_logo_html = f"data:image/png;base64,{bot_logo_base64}"
 
 
