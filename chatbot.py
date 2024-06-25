@@ -27,12 +27,11 @@ import base64
 from io import BytesIO
 
 
-uri = "mongodb+srv://carbonetrix:HGnX7kceihSN7jne@carbonetrix.pllb2my.mongodb.net/?retryWrites=true&w=majority&appName=Carbonetrix"
-# uri = "mongodb+srv://Usman:DvlNBJrLRyU0gESv@carbonetrix.pllb2my.mongodb.net/?retryWrites=true&w=majority&appName=Carbonetrix"
+
 
 
 # MongoDB Management
-client = MongoClient(uri)
+client = MongoClient(st.secrets.uri)
 db = client.get_database("Carbonetrix")
 users_collection = db['Carbonetrix']
 feedback_collection = db['Feedback'] 
