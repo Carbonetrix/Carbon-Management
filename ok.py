@@ -1,29 +1,27 @@
+from dotenv import load_dotenv 
+import anthropic
 import streamlit as st
-from pymongo import MongoClient
+import os
 
-# Use Streamlit's secrets management to fetch the credentials
-db_username = st.secrets["db_username"]
-db_password = st.secrets["db_password"]
-cluster_name = st.secrets["cluster_name"]
+# load_dotenv()
+# api_key=os.getenv("CARBONETRIX_ANTHROPIC_API_KEY")
 
-# Define a function that initializes the connection to MongoDB
-# @st.experimental_singleton(suppress_st_warning=True)
-def init_connection():
-    uri = f"mongodb+srv://{db_username}:{db_password}@{cluster_name}.mongodb.net/?retryWrites=true&w=majority&appName=Carbonetrix"
-    return MongoClient(uri)
+def get_response(user_content): 
+    client = anthropic.Anthropic(api_key=st.secrets.api_key)
+    response = client.messages.create(
+        model="claude-3-opus-20240229",
+        max_tokens=1024,
+        system="Generate 5 attention-grabbing blog titles based on user-provived keywords",
+        messages=[{"role":"user", "content":user_content}],
+    )
+    return response.content[0].text
 
-# Initialize the connection
-client = init_connection()
+st.title("Blog Title Generator")
+user_content = st.text_input("Enter the keyword for blog titles:")
 
-# Use the client to interact with the database
-db = client["your_database_name"]  # Replace with your database name
-collection = db["your_collection_name"]  # Replace with your collection name
-
-# Example Streamlit app content
-st.title("MongoDB Connection Test")
-st.write("Connected to the database!")
-
-# Example query
-documents = collection.find().limit(5)
-for doc in documents:
-    st.write(doc)
+if st.button("Generate Titles"):
+    if not user_content:
+        st.warning("Please enter a keyword before generating titles.", icon = "⚠️")
+    generated_titles = get_response(user_content)
+    st.success("Titles generated successfully!")
+    st.text_area("", value=generated_titles, height=300)

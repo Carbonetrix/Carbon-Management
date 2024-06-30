@@ -9,3 +9,4 @@ pillow==10.3.0
 sentence-transformers==2.7.0
 streamlit-chat==0.1.1
 pymongo==4.7.3
+anthropic==0.30.0

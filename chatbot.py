@@ -25,7 +25,7 @@ from pymongo.mongo_client import MongoClient
 from PIL import Image
 import base64
 from io import BytesIO
-
+import anthropic
 
 
 
@@ -39,16 +39,18 @@ feedback_collection = db['Feedback']
 
 
 
-print(genai.configure(api_key=os.getenv("GOOGLE_API_KEY")))
+# print(genai.configure(api_key=os.getenv("GOOGLE_API_KEY")))
 
 
 
 # Initialize the generative model
-model = genai.GenerativeModel("gemini-pro")
-chat = model.start_chat(history=[])
+# model = genai.GenerativeModel("gemini-pro")
+# chat = model.start_chat(history=[])
 
-model = genai.GenerativeModel("gemini-1.5-flash-latest")
-chat = model.start_chat(history=[])
+# model = genai.GenerativeModel("gemini-1.5-flash-latest")
+# chat = model.start_chat(history=[])
+
+
 
 
 # Initialize session state variables if they don't exist
@@ -93,11 +95,15 @@ def add_feedback_to_db(feedback, timestamp, question):
 
 
 # Prompting of the model through API
-def get_gemini_response(question, level):
+def get_claude_response(user_content, level):
+    # api_key = os.getenv("CARBONETRIX_ANTHROPIC_API_KEY")
+    api_key = st.secrets.CARBONETRIX_ANTHROPIC_API_KEY
+    client = anthropic.Anthropic(api_key=api_key)
+    
     level_instructions = {
         "Beginner": "Explain in simple terms with basic details.",
         "Intermediate": "Provide more detailed explanations with some technical terms.",
-        "Professional": "Include advanced technical details and professional formulars and point of view."
+        "Professional": "Include advanced technical details and professional formulas and points of view."
     }
 
     prompt = (
@@ -105,13 +111,20 @@ def get_gemini_response(question, level):
         f"You are used by professionals in the field and construction organizations. Be explicit, informative, and explain technical concepts in a clear manner. "
         f"If any question apart from Carbon Management for the Built Environment or construction or infrastructure is asked, kindly say 'I'm sorry, I answer carbon-related questions only.' "
         f"Always provide at least 5 references and footnotes from reputable and accessible sources such as academic journals, official government or organizational websites, and well-known industry publications. "
-        f"Make sure the references are accessible and not broken links. "
+        f"Make sure the references are accessible and make each refences on a new line "
         f"Ensure the response is well-documented and avoid unnecessary breaking of lines. "
         f"{level_instructions[level]} "
-        f"Question: {question}"
+        f"Question: {user_content}"
     )
-    response = chat.send_message(prompt + question, stream=True)
-    return response
+    
+    response = client.messages.create(
+        model="claude-3-haiku-20240307",
+        max_tokens=1024,
+        system="Generate detailed responses to user-provided questions",
+        messages=[{"role": "user", "content": prompt}],
+    )
+    return response.content[0].text
+
 
 
 def main():
@@ -178,7 +191,7 @@ def main():
         if st.session_state.messages:
             for i, msg in enumerate(st.session_state.messages):
                 if isinstance(msg, dict) and msg.get("role") == "user" and "content" in msg:
-                    message(msg["content"], is_user=True, key=f"user_{i}",avatar_style=user_avatar_style, seed=user_seed)
+                    message(msg["content"], is_user=True, key=f"user_{i}",avatar_style=user_avatar_style, seed=user_seed,)
                 elif isinstance(msg, dict) and msg.get("role") == "assistant" and "content" in msg:
                     # Custom HTML for displaying the company logo
                     st.markdown(f"""
@@ -200,8 +213,8 @@ def main():
         add_question_to_db(prompt, timestamp)
         with input_container:
             if prompt:
-                response = get_gemini_response(prompt,st.session_state['level'])
-                response_text = "".join(chunk.text for chunk in response)
+                response_text = get_claude_response(prompt, st.session_state['level'])
+                # response_text = "".join(chunk.text for chunk in response)
                 
 
                 timestamp = datetime.now()

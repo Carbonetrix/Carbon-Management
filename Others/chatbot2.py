@@ -37,7 +37,7 @@ from io import BytesIO
 class BECMAIAssistant:
     def __init__(self):
         load_dotenv()
-        self.mongo_uri = "mongodb+srv://carbonetrix:Teamtitan1@carbonetrix.vg4wqwh.mongodb.net/?retryWrites=true&w=majority&appName=Carbonetrix"
+        self.mongo_uri = ""
         self.client = MongoClient(self.mongo_uri)
         self.db = self.client.get_database("Carbonetrix")
         self.users_collection = self.db['Carbonetrix']
