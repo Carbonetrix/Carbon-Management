@@ -48,7 +48,7 @@ BECM AI Assistant is a Streamlit-based application designed to provide detailed 
 
 1. Run the Streamlit application:
     ```bash
-    streamlit run app.py
+    streamlit run chatbot.py
 
 2. Open your browser and navigate to http://localhost:8501.
 
