@@ -33,7 +33,7 @@ import anthropic
 
 # MongoDB Management
 # client = MongoClient(os.getenv("uri"))
-client = MongoClient(st.secrets.uri)
+client = MongoClient(st.secrets["uri"])
 db = client.get_database("Carbonetrix")
 users_collection = db['Carbonetrix']
 feedback_collection = db['Feedback'] 
