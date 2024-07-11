@@ -33,6 +33,7 @@ import anthropic
 
 # MongoDB Management
 # client = MongoClient(os.getenv("uri"))
+# client = MongoClient(os.getenv("uri"))
 client = MongoClient(st.secrets["uri"])
 db = client.get_database("Carbonetrix")
 users_collection = db['Carbonetrix']
@@ -202,8 +203,7 @@ def main():
         if st.session_state.messages:
             for i, msg in enumerate(st.session_state.messages):
                 if isinstance(msg, dict) and msg.get("role") == "user" and "content" in msg:
-                    # st.chat_message(msg["content"], is_user=True, key=f"user_{i}")
-                    message(msg["content"], is_user=True, key=f"user{i}",avatar_style=user_avatar_style, seed=user_seed,)
+                    message(msg["content"], is_user=True, key=f"user{i}",avatar_style=user_avatar_style, seed=user_seed)
                 elif isinstance(msg, dict) and msg.get("role") == "assistant" and "content" in msg:
                     # Custom HTML for displaying the company logo
                     st.markdown(f"""
