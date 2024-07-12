@@ -24,7 +24,8 @@ import anthropic
 # MongoDB Management
 # client = MongoClient(os.getenv("uri"))
 # client = MongoClient(os.getenv("uri"))
-client = MongoClient(st.secrets.uri)
+# client = MongoClient(st.secrets.uri)
+client = MongoClient(uri)
 db = client.get_database("Carbonetrix")
 users_collection = db['Carbonetrix']
 feedback_collection = db['Feedback'] 
@@ -95,7 +96,8 @@ def add_feedback_to_db(feedback, timestamp):
 
 
 def get_claude_response(user_content, level):
-    api_key = st.secrets.CARBONETRIX_ANTHROPIC_API_KEY
+    api_key = CARBONETRIX_ANTHROPIC_API_KEY
+    # api_key = st.secrets.CARBONETRIX_ANTHROPIC_API_KEY
     # api_key = os.getenv("CARBONETRIX_ANTHROPIC_API_KEY")
     client = anthropic.Anthropic(api_key=api_key)
     
