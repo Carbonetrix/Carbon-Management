@@ -1,5 +1,4 @@
 
-
 import streamlit as st
 from PIL import Image
 from dotenv import load_dotenv
@@ -9,23 +8,14 @@ import streamlit as st
 import json
 import os
 from streamlit_chat import message
-import google.generativeai as genai
-from langchain_community.vectorstores import Chroma
-from langchain.chains.question_answering import load_qa_chain
-from langchain import PromptTemplate
-from langchain_community.embeddings import SentenceTransformerEmbeddings
-from langchain_community.vectorstores import FAISS
-from langchain_google_genai import ChatGoogleGenerativeAI
-from langchain.prompts import ChatPromptTemplate
-from langchain_community.document_loaders import PyPDFDirectoryLoader
-from langchain.text_splitter import RecursiveCharacterTextSplitter
-from langchain_google_genai import GoogleGenerativeAIEmbeddings
-
 from pymongo.mongo_client import MongoClient
 from PIL import Image
 import base64
 from io import BytesIO
 import anthropic
+
+
+
 
 # model = genai.GenerativeModel("gemini-1.5-flash-latest")
 # chat = model.start_chat(history=[])
